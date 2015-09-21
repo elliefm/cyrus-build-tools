@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# cass directory doesn't persist on /dev/shm, so make sure it's there
+cass=/dev/shm/cass
+test -d "$cass" || sudo -u cyrus mkdir "$cass"
+
+cyrus=/dev/shm/cyrus
+test -d "$cyrus" && rm -fr "$cyrus"
+make "DESTDIR=$cyrus" install
