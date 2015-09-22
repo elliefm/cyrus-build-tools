@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -e
+set -o pipefail
 
 # cass directory doesn't persist on /dev/shm, so make sure it's there
 cass=/dev/shm/cass
