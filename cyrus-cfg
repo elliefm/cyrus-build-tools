@@ -4,6 +4,6 @@ set -o pipefail
 
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
-./configure CFLAGS="-g -O0 -Wall -Wextra -Werror" --enable-coverage --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix=/usr/cyrus --enable-autocreate --enable-silent-rules --enable-backup $*
+./configure CFLAGS="-g -O0 -Wall -Wextra -Werror $CFLAGS" --enable-coverage --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix=/usr/cyrus --enable-autocreate --enable-silent-rules --enable-backup $*
 
 make lex-fix
