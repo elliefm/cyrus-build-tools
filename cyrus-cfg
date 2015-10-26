@@ -2,8 +2,12 @@
 set -e
 set -o pipefail
 
+test -z "$CYRUS_PREFIX" &&
+    echo "please set CASS_ROOTDIR and CYRUS_PREFIX to match your cassandane.ini" 1>&2 &&
+    exit 1
+
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
-./configure CFLAGS="-g -O0 -Wall -Wextra -Werror $CFLAGS" --enable-coverage --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix=/usr/cyrus --enable-autocreate --enable-silent-rules --enable-backup $*
+./configure CFLAGS="-g -O0 -Wall -Wextra -Werror $CFLAGS" --enable-coverage --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix="$CYRUS_PREFIX" --enable-autocreate --enable-silent-rules --enable-backup $*
 
 make lex-fix

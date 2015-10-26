@@ -2,12 +2,12 @@
 set -e
 set -o pipefail
 
-test -z "$CASS_ROOTDIR" -o -z "$CASS_DESTDIR" &&
-    echo "please set CASS_ROOTDIR and CASS_DESTDIR to match your cassandane.ini" 1>&2 &&
+test -z "$CASS_ROOTDIR" &&
+    echo "please set CASS_ROOTDIR and CYRUS_PREFIX to match your cassandane.ini" 1>&2 &&
     exit 1
 
 # cass directory doesn't necessarily persist, so make sure it's there
 test -d "$CASS_ROOTDIR" || sudo -u cyrus mkdir "$CASS_ROOTDIR"
 
-test -d "$CASS_DESTDIR" && rm -fr "$CASS_DESTDIR"
-make "DESTDIR=$CASS_DESTDIR" install
+test -d "$CYRUS_PREFIX" && rm -fr "$CYRUS_PREFIX"
+make install
