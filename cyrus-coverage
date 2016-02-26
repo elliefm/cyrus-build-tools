@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+set -o pipefail
+
+INFO_FILE="coverage.info"
+HTML_DIR="coverage"
+
+# create a .info file from the .gcda files
+lcov --directory . -c -o $INFO_FILE
+
+# strip out unit test and external library info
+lcov --remove $INFO_FILE "cunit/*" "/usr/*" -o $INFO_FILE
+
+# generate html
+genhtml -o $HTML_DIR $INFO_FILE
