@@ -8,6 +8,6 @@ test -z "$CYRUS_PREFIX" &&
 
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
-./configure CFLAGS="-g -O0 -Wall -Wextra -Werror $CFLAGS" --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix="$CYRUS_PREFIX" --enable-autocreate --enable-silent-rules --enable-backup $*
+./configure CFLAGS="-g -O0 -Wall -Wextra -Werror -Wl,--as-needed $CFLAGS" --enable-http --enable-unit-tests --enable-replication --with-openssl=yes --enable-nntp --enable-murder --enable-idled --enable-event-notification --enable-sieve --prefix="$CYRUS_PREFIX" --enable-autocreate --enable-silent-rules --enable-backup $*
 
 make lex-fix
