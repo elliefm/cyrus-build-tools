@@ -2,12 +2,32 @@
 set -e
 set -o pipefail
 
-test -z "$CASS_ROOTDIR" &&
-    echo "please set CASS_ROOTDIR and CYRUS_PREFIX to match your cassandane.ini" 1>&2 &&
+if [ -z "$CASS_ROOTDIR" ]; then
+    echo "Please set environment variables to match your cassandane.ini:" 1>&2
+    echo "    CASS_ROOTDIR is currently '$CASS_ROOTDIR'" 1>&2
+    echo "    CYRUSDEFAULT_PREFIX is currently '$CYRUSDEFAULT_PREFIX'" 1>&2
+    echo "    CYRUSREPLICA_PREFIX is currently '$CYRUSREPLICA_PREFIX'" 1>&2
+    echo "    CYRUSMURDER_PREFIX is currently  '$CYRUSMURDER_PREFIX'" 1>&2
     exit 1
+fi
 
 # cass directory doesn't necessarily persist, so make sure it's there
 test -d "$CASS_ROOTDIR" || sudo -u cyrus mkdir "$CASS_ROOTDIR"
 
-test -d "$CYRUS_PREFIX" && rm -fr "$CYRUS_PREFIX"
+# be careful not to blat over wrong directory!
+prefix=$(grep '^prefix' config.log | cut -d"'" -f2)
+if [ -z "$prefix" ]; then
+    echo "Couldn't detect installation prefix from config.log" 1>&2
+    exit 1;
+fi
+
+if [ "$prefix" != "$CYRUSDEFAULT_PREFIX" \
+     -a "$prefix" != "$CYRUSREPLICA_PREFIX" \
+     -a "$prefix" != "$CYRUSMURDER_PREFIX" \
+   ]; then
+   echo "Cyrus build configured with non-cassandane prefix: $prefix" 1>&2
+   exit 1;
+fi
+
+test -d "$prefix" && rm -fr "$prefix"
 make install
