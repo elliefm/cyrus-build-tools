@@ -1,0 +1,29 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+use File::Tail;
+
+my $logfile = shift @ARGV // '/var/log/syslog';
+
+my $tail = File::Tail->new(
+    name => $logfile,
+    interval => 1,
+    maxinterval => 10,
+    tail => 10,
+    reset_tail => 0,
+);
+
+my $line;
+while ($line = $tail->read()) {
+#Aug 30 12:37:40 debian-testing gdbtramp[12830]: You have 30 seconds to run gdb thus: >>>>   gdb -x /var/tmp/imapd.x
+    next if $line !~ m{gdbtramp\[\d+\]:\s
+                       You\shave\s\d+\sseconds\sto\srun\sgdb\sthus:\s
+                       >>>>\s+gdb\s-x\s(/var/tmp/[\w_-]+\.x)$}x;
+
+    print STDERR $line;
+    print STDERR "found gdb script: $1\n";
+
+    system "sudo -u cyrus gdb -x $1";
+}
