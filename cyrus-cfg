@@ -37,6 +37,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
     --enable-autocreate \
     --enable-silent-rules \
     --enable-backup \
+    --with-lmdb \
     $*
 
 make lex-fix
