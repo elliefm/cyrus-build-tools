@@ -26,6 +26,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 ./configure CFLAGS="-g -O0 -Wall -Wextra -Werror -Wl,--as-needed $CFLAGS" \
     --prefix="$CYRUS_PREFIX" \
     --enable-http \
+    --enable-calalarmd \
     --enable-unit-tests \
     --enable-replication \
     --with-openssl=yes \
