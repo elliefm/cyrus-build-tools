@@ -23,7 +23,9 @@ fi
 
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
-./configure CFLAGS="-g -O0 -Wall -Wextra -Werror -Wl,--as-needed $CFLAGS" \
+./configure \
+    CFLAGS="-g -O0 -Wall -Wextra -Werror -Wl,--as-needed $CFLAGS" \
+    XAPIAN_CONFIG="/usr/local/xapian/bin/xapian-config-1.5" \
     --prefix="$CYRUS_PREFIX" \
     --enable-http \
     --enable-calalarmd \
@@ -39,6 +41,8 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
     --enable-silent-rules \
     --enable-backup \
     --with-lmdb \
+    --enable-xapian \
+    --enable-jmap \
     $*
 
 make lex-fix
