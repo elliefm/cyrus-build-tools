@@ -25,6 +25,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
 ./configure \
     CFLAGS="-g -O0 -Wall -Wextra -Werror -Wl,--as-needed $CFLAGS" \
+    CXXFLAGS="-g -O0 -Wall -Wextra -Werror $CXXFLAGS" \
     XAPIAN_CONFIG="/usr/local/xapian/bin/xapian-config-1.5" \
     --prefix="$CYRUS_PREFIX" \
     --enable-http \
