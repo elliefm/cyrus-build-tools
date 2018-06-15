@@ -44,6 +44,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
     --with-lmdb \
     --enable-xapian \
     --enable-jmap \
+    --with-ldap \
     $*
 
 make lex-fix
