@@ -5,6 +5,12 @@ set -o pipefail
 INFO_FILE="coverage.info"
 HTML_DIR="coverage"
 
+# reclaim ownership of files from cyrus user
+find . -name \*.gcda -not -user ellie -execdir sudo chown ellie:ellie "{}" +
+
+# but make sure cyrus can update them further if it needs to
+find . -name \*.gcda -execdir chmod g+rw "{}" +
+
 # create a .info file from the .gcda files
 lcov --directory . -c -o $INFO_FILE
 
