@@ -25,5 +25,5 @@ while ($line = $tail->read()) {
     print STDERR $line;
     print STDERR "found gdb script: $1\n";
 
-    system "sudo -u cyrus gdb -x $1";
+    exec "sudo -u cyrus gdb -x $1";
 }
