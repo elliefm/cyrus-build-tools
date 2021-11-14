@@ -1,0 +1,30 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+use File::Basename;
+use File::Find;
+
+my @prefixes = (
+    @ENV{qw( CYRUSDEFAULT_PREFIX
+             CYRUSMURDER_PREFIX
+             CYRUSREPLICA_PREFIX )},
+    glob "/cyrus/*"
+);
+
+my $whitespace = q{};
+sub master_version
+{
+    return if basename($_) ne 'master';
+    return if not -x $_;
+
+    print "$whitespace\033[1m$_:\033[0m\n";
+    system $_, q{-V};
+
+    $whitespace = qq{\n};
+}
+
+no warnings 'File::Find';
+find({ wanted => \&master_version, no_chdir => 1 },
+     grep { -d } @prefixes);
