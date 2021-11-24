@@ -29,7 +29,7 @@ my $git_toplevel = qx(git rev-parse --show-toplevel 2>/dev/null);
 chomp $git_toplevel;
 if (defined $git_toplevel && basename($git_toplevel) eq 'cyrus-imapd') {
     print "$whitespace\033[1m$git_toplevel:\033[0m\n";
-    system 'git describe --match cyrus-imapd-*';
+    system 'git describe --dirty=-dirty --match cyrus-imapd-*';
     $whitespace = qq{\n};
 }
 
