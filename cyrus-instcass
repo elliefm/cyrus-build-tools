@@ -30,4 +30,5 @@ if [ "$prefix" != "$CYRUSDEFAULT_PREFIX" \
 fi
 
 test -d "$prefix" && rm -fr "$prefix"
+NOCYRUS=1 make -j4 -C cassandane
 make install
