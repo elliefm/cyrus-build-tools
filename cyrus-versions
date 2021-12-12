@@ -20,7 +20,35 @@ sub master_version
     return if basename($_) ne 'master';
     return if not -x $_;
 
-    system $_, q{-V};
+    my ($version, @branches);
+
+    $version = qx($_ -V 2>/dev/null);
+    chomp $version;
+    if (not $version) {
+        print "unknown version\n";
+        return;
+    }
+
+    if ($ENV{CYRUS_SOURCEDIR}
+        && -d $ENV{CYRUS_SOURCEDIR}
+        && $version =~ m/-g([0-9a-fA-F]*)(?:-dirty)?$/)
+    {
+        my $branch_cmd = "(cd $ENV{CYRUS_SOURCEDIR}"
+                         . " && git branch --points-at $1) 2>/dev/null";
+        open my $in, '-|', $branch_cmd or die $!;
+        while (<$in>) {
+            if (m/^[* ] (.*)$/) {
+                push @branches, $1;
+            }
+        }
+        close $in;
+    }
+
+    print "$version";
+    if (scalar @branches) {
+        print " \033[1;32m" . join(q{ }, @branches) . "\033[0m";
+    }
+    print "\n";
 }
 
 my $whitespace = q{};
