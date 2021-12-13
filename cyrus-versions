@@ -26,6 +26,8 @@ sub format_version
         return;
     }
 
+    $version =~ s/^cyrus-imapd[- ]//;
+
     if ($ENV{CYRUS_SOURCEDIR}
         && -d $ENV{CYRUS_SOURCEDIR}
         && $version =~ m/-g([0-9a-fA-F]*)(?:-dirty)?$/)
@@ -49,6 +51,9 @@ sub format_version
             push @tags, $_;
         }
         close $in;
+    }
+    if ($version !~ m/-g[0-9a-fA-F]*(?:-dirty)?$/) {
+        $version = "\033[93m$version\033[0m";
     }
 
     print "$version";
