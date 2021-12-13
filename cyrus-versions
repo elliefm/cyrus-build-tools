@@ -15,15 +15,12 @@ my @prefixes = (
     glob "/cyrus/*"
 );
 
-sub master_version
+sub format_version
 {
-    return if basename($_) ne 'master';
-    return if not -x $_;
+    my ($version) = @_;
 
-    my ($version, @branches, @tags);
+    my (@branches, @tags);
 
-    $version = qx($_ -V 2>/dev/null);
-    chomp $version;
     if (not $version) {
         print "unknown version\n";
         return;
@@ -64,13 +61,29 @@ sub master_version
     print "\n";
 }
 
+sub master_version
+{
+    return if basename($_) ne 'master';
+    return if not -x $_;
+
+    my $version = qx($_ -V 2>/dev/null);
+    chomp $version;
+
+    format_version($version);
+}
+
 my $whitespace = q{};
 
-my $git_toplevel = qx(git rev-parse --show-toplevel 2>/dev/null);
-chomp $git_toplevel;
-if (defined $git_toplevel && basename($git_toplevel) eq 'cyrus-imapd') {
-    print "$whitespace\033[1m$git_toplevel:\033[0m\n";
-    system 'git describe --dirty=-dirty --match cyrus-imapd-*';
+if ($ENV{CYRUS_SOURCEDIR} && -d $ENV{CYRUS_SOURCEDIR}) {
+    my $describe_cmd = "(cd $ENV{CYRUS_SOURCEDIR}"
+                       . " && git describe --dirty=-dirty"
+                       . "                 --match cyrus-imapd-*"
+                       . ") 2>/dev/null";
+    my $version = qx($describe_cmd);
+    chomp $version;
+
+    print "$whitespace\033[1msource (and cassandane):\033[0m\n";
+    format_version($version);
     $whitespace = qq{\n};
 }
 
