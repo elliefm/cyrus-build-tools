@@ -5,6 +5,7 @@ use strict;
 
 use File::Basename;
 use File::Find;
+use Digest::Pearson qw(pearson);
 
 no warnings 'File::Find';
 
@@ -57,9 +58,11 @@ sub format_version
         # it's a recognisable release!
         $version = "\033[1;33m$version\033[0m";
     }
-    else {
-        # FIXME would be nice to hash these to unique colours...
-        $version =~ s/^(\d+\.\d+\.\d+)/\033[94m$1\033[0m/;
+    elsif ($version =~ m/^(\d+\.\d+\.\d+)/) {
+        # colour main part of version
+        my $match = $1;
+        my $colour = 17 + pearson($match) % 214;
+        $version =~ s/^$match/\033[38;5;${colour}m${match}\033[0m/;
     }
 
     print $version;
