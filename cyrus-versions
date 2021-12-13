@@ -52,16 +52,22 @@ sub format_version
         }
         close $in;
     }
+
     if ($version !~ m/-g[0-9a-fA-F]*(?:-dirty)?$/) {
-        $version = "\033[93m$version\033[0m";
+        # it's a recognisable release!
+        $version = "\033[1;33m$version\033[0m";
+    }
+    else {
+        # FIXME would be nice to hash these to unique colours...
+        $version =~ s/^(\d+\.\d+\.\d+)/\033[94m$1\033[0m/;
     }
 
-    print "$version";
+    print $version;
     if (scalar @branches) {
-        print " \033[1;32m" . join(q{ }, @branches) . "\033[0m";
+        print " \033[92m" . join(q{ }, @branches) . "\033[0m";
     }
     if (scalar @tags) {
-        print " \033[1;33m" . join(q{ }, @tags) . "\033[0m";
+        print " \033[93m" . join(q{ }, @tags) . "\033[0m";
     }
     print "\n";
 }
