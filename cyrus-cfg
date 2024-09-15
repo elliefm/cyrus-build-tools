@@ -45,6 +45,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
     --enable-xapian \
     --enable-jmap \
     --with-ldap \
+    --enable-debug-slowio \
     $*
 
 make lex-fix
