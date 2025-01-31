@@ -43,7 +43,6 @@ git submodule update
 git clean -xfd
 
 ./build.sh $CL_VERSION libchardet
-./build.sh $CL_VERSION libcld2
 ./build.sh $CL_VERSION libical
 ./build.sh $CL_VERSION vzic
 ./build.sh $CL_VERSION timezones
