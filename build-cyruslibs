@@ -1,0 +1,54 @@
+#!/bin/bash
+set -e
+set -o pipefail
+
+if [ -z $1 ]; then
+    echo "usage: $0 <version>"
+    exit 1
+fi
+
+CL_VERSION="cyruslibs-fastmail-v$1"
+CL_PREFIX="/usr/local/$CL_VERSION"
+CL_BUILD="./build.sh"
+
+if [ -e "$CL_PREFIX" ]; then
+    echo "$CL_PREFIX already exists"
+    exit 2
+fi
+
+if [ ! -x "$CL_BUILD" ]; then
+    echo "$CL_BUILD not found"
+    exit 3
+fi
+
+if git show-ref --tags "$CL_VERSION" --quiet; then
+    echo "building $CL_VERSION into $CL_PREFIX"
+else
+    echo "$CL_VERSION: tag not found"
+    exit 4
+fi
+
+if [ -n "$(git status --porcelain)" ]; then
+    echo "repository contains uncommitted files:"
+    git status --porcelain
+    exit 5
+fi
+
+if ! git checkout --detach "$CL_VERSION"; then
+    echo "git checkout failed"
+    exit 6
+fi
+
+git submodule update
+git clean -xfd
+
+./build.sh $CL_VERSION libchardet
+./build.sh $CL_VERSION libcld2
+./build.sh $CL_VERSION libical
+./build.sh $CL_VERSION vzic
+./build.sh $CL_VERSION timezones
+./build.sh $CL_VERSION icu
+./build.sh $CL_VERSION xapian
+
+git checkout -
+git submodule update
