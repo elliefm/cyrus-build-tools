@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+set -o pipefail
+
+if [ -z $1 ]; then
+    echo "usage: $0 <version>"
+    exit 1
+fi
+
+CL_VERSION="cyruslibs-fastmail-v$1"
+CL_PREFIX="/usr/local/$CL_VERSION"
+CL_SYMLINK="/usr/local/cyruslibs"
+
+# check that /usr/local/cyruslibs is either nonexistent or a symlink
+if [ -e "$CL_SYMLINK" -a ! -L "$CL_SYMLINK" ]; then
+    echo "$CL_SYMLINK is not a symlink"
+    exit 2
+fi
+
+# check that the requested cyruslibs version is installed
+if [ ! -e "$CL_PREFIX" ]; then
+    echo "$CL_VERSION is not installed"
+    exit 3
+fi
+
+# remove the symlink
+test -L "$CL_SYMLINK" && sudo rm "$CL_SYMLINK"
+
+# link /usr/local/cyruslibs to the requested cyruslibs version
+sudo ln -s "$CL_PREFIX" "$CL_SYMLINK"
+ls -l --color=auto "$CL_SYMLINK"
