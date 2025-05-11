@@ -2,11 +2,13 @@
 set -e
 set -o pipefail
 
-CL_SYMLINK="/usr/local/cyruslibs"
+CL_PATH="/usr/local"
+CL_SYMLINK="$CL_PATH/cyruslibs"
+CL_VPREFIX="cyruslibs-fastmail-v"
 
 if [ -n "$1" ]; then
-    CL_VERSION="cyruslibs-fastmail-v$1"
-    CL_PREFIX="/usr/local/$CL_VERSION"
+    CL_VERSION="$CL_VPREFIX$1"
+    CL_PREFIX="$CL_PATH/$CL_VERSION"
 
     # check that /usr/local/cyruslibs is either nonexistent or a symlink
     if [ -e "$CL_SYMLINK" -a ! -L "$CL_SYMLINK" ]; then
@@ -25,6 +27,8 @@ if [ -n "$1" ]; then
 
     # link /usr/local/cyruslibs to the requested cyruslibs version
     sudo ln -s "$CL_PREFIX" "$CL_SYMLINK"
+else
+    ls -d $CL_PATH/$CL_VPREFIX* | cat
 fi
 
 stat --format '%N' "$CL_SYMLINK"
