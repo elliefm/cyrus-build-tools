@@ -36,20 +36,17 @@ fi
 
 cleanup() {
     ec=$?
+    git checkout -
+    git submodule update
+    git reset --hard --recurse-submodules
+    git clean -xfdq
+    git submodule foreach git clean -xfdq
     if [[ ${ec} -ne 0 ]]; then
-        echo "something went wrong, cleaning up"
+        echo "something went wrong, not installed"
         sudo rm -fr "$CL_PREFIX"
-        git checkout -
-        git submodule update
-        git reset --hard --recurse-submodules
-        git clean -xfdq
-        git submodule foreach git clean -xfdq
     else
-        git checkout -
-        git submodule update
         echo "success! $CL_VERSION installed to $CL_PREFIX"
     fi
-    exit $ec
 }
 
 if ! git checkout --detach "$CL_VERSION"; then
