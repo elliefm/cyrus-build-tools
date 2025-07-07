@@ -34,10 +34,30 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 5
 fi
 
+cleanup() {
+    ec=$?
+    if [[ ${ec} -ne 0 ]]; then
+        echo "something went wrong, cleaning up"
+        sudo rm -fr "$CL_PREFIX"
+        git checkout -
+        git submodule update
+        git reset --hard --recurse-submodules
+        git clean -xfdq
+        git submodule foreach git clean -xfdq
+    else
+        git checkout -
+        git submodule update
+        echo "success! $CL_VERSION installed to $CL_PREFIX"
+    fi
+    exit $ec
+}
+
 if ! git checkout --detach "$CL_VERSION"; then
     echo "git checkout failed"
     exit 6
 fi
+
+trap cleanup EXIT
 
 git submodule update
 git clean -xfd
@@ -48,6 +68,3 @@ git clean -xfd
 ./build.sh $CL_VERSION timezones
 ./build.sh $CL_VERSION icu
 ./build.sh $CL_VERSION xapian
-
-git checkout -
-git submodule update
