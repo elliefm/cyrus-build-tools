@@ -46,6 +46,7 @@ test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
     --enable-jmap \
     --with-ldap \
     --enable-debug-slowio \
+    --enable-cyrusdb-benchmarks \
     $*
 
 make lex-fix
