@@ -18,7 +18,7 @@ lcov --directory . -c -o $INFO_FILE
 lcov --remove $INFO_FILE "cunit/*" "/usr/*" -o $INFO_FILE
 
 # generate html
-genhtml -o $HTML_DIR $INFO_FILE
+genhtml --ignore-errors unmapped -o $HTML_DIR $INFO_FILE
 
 # done
 echo "Done.  Coverage data is at file://$PWD/$HTML_DIR/index.html"
