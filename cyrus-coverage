@@ -12,13 +12,12 @@ find . -name \*.gcda -not -user ellie -execdir sudo chown ellie:ellie "{}" +
 find . -name \*.gcda -execdir chmod g+rw "{}" +
 
 # create a .info file from the .gcda files
-lcov --directory . -c -o $INFO_FILE
-
-# strip out unit test and external library info
-lcov --remove $INFO_FILE "cunit/*" "/usr/*" -o $INFO_FILE
+LCOVFLAGS="--no-external --branch-coverage"
+lcov $LCOVFLAGS --directory . -c -o $INFO_FILE
 
 # generate html
-genhtml --ignore-errors unmapped -o $HTML_DIR $INFO_FILE
+GENHTMLFLAGS="--branch-coverage"
+genhtml $GENHTMLFLAGS --ignore-errors unmapped -o $HTML_DIR $INFO_FILE
 
 # done
 echo "Done.  Coverage data is at file://$PWD/$HTML_DIR/index.html"
