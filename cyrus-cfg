@@ -23,10 +23,14 @@ fi
 
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
+WARNINGS="-Wall -Wextra -Werror -Wformat-security -Wwrite-strings"
+OPTIONS="-g -O0 -Wl,--as-needed"
+OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
+
 ./configure \
     PATH="$PATH:/usr/local/cyruslibs/bin" \
-    CFLAGS="-g -O0 -Wall -Wextra -Wformat-security -Werror -Wwrite-strings -Wl,--as-needed -fstack-protector-strong -fstack-clash-protection $CFLAGS" \
-    CXXFLAGS="-g -O0 -Wall -Wextra -Wformat-security -Werror -fstack-protector-strong -fstack-clash-protection $CXXFLAGS" \
+    CFLAGS="$WARNINGS $OPTIONS $CFLAGS" \
+    CXXFLAGS="$WARNINGS $OPTIONS $CXXFLAGS" \
     --prefix="$CYRUS_PREFIX" \
     --enable-http \
     --enable-calalarmd \
