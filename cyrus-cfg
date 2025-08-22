@@ -24,7 +24,7 @@ fi
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
 WARNINGS="-Wall -Wextra -Werror -Wformat-security -Wwrite-strings"
-OPTIONS="-g -O2 -Wl,--as-needed"
+OPTIONS="-g -O2 -Wl,--as-needed -D_FORTIFY_SOURCE=0"
 OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
 
 ./configure \
