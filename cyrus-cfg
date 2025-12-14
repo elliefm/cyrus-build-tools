@@ -51,6 +51,7 @@ OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
     --with-ldap \
     --enable-debug-slowio \
     --enable-cyrusdb-benchmarks \
+    --with-sqlite \
     $*
 
 make lex-fix
