@@ -11,8 +11,7 @@ no warnings 'File::Find';
 
 my @prefixes = (
     @ENV{qw( CYRUSDEFAULT_PREFIX
-             CYRUSMURDER_PREFIX
-             CYRUSREPLICA_PREFIX )},
+             CYRUSOTHER_PREFIX )},
     glob "/cyrus/*"
 );
 

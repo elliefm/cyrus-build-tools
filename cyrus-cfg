@@ -2,11 +2,8 @@
 set -e
 set -o pipefail
 
-if [ "x$1" = "xreplica" ]; then
-    CYRUS_PREFIX="$CYRUSREPLICA_PREFIX"
-    shift
-elif [ "x$1" = "xmurder" ]; then
-    CYRUS_PREFIX="$CYRUSMURDER_PREFIX"
+if [ "x$1" = "xother" ]; then
+    CYRUS_PREFIX="$CYRUSOTHER_PREFIX"
     shift
 else
     CYRUS_PREFIX="$CYRUSDEFAULT_PREFIX"
@@ -16,8 +13,7 @@ if [ -z "$CYRUS_PREFIX" ]; then
     echo "Please set environment variables to match your cassandane.ini:" 1>&2
     echo "    CASS_ROOTDIR is currently '$CASS_ROOTDIR'" 1>&2
     echo "    CYRUSDEFAULT_PREFIX is currently '$CYRUSDEFAULT_PREFIX'" 1>&2
-    echo "    CYRUSREPLICA_PREFIX is currently '$CYRUSREPLICA_PREFIX'" 1>&2
-    echo "    CYRUSMURDER_PREFIX is currently  '$CYRUSMURDER_PREFIX'" 1>&2
+    echo "    CYRUSOTHER_PREFIX is currently '$CYRUSOTHER_PREFIX'" 1>&2
     exit 1
 fi
 

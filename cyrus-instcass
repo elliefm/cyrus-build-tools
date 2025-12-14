@@ -6,8 +6,7 @@ if [ -z "$CASS_ROOTDIR" ]; then
     echo "Please set environment variables to match your cassandane.ini:" 1>&2
     echo "    CASS_ROOTDIR is currently '$CASS_ROOTDIR'" 1>&2
     echo "    CYRUSDEFAULT_PREFIX is currently '$CYRUSDEFAULT_PREFIX'" 1>&2
-    echo "    CYRUSREPLICA_PREFIX is currently '$CYRUSREPLICA_PREFIX'" 1>&2
-    echo "    CYRUSMURDER_PREFIX is currently  '$CYRUSMURDER_PREFIX'" 1>&2
+    echo "    CYRUSOTHER_PREFIX is currently '$CYRUSOTHER_PREFIX'" 1>&2
     exit 1
 fi
 
@@ -22,8 +21,7 @@ if [ -z "$prefix" ]; then
 fi
 
 if [ "$prefix" != "$CYRUSDEFAULT_PREFIX" \
-     -a "$prefix" != "$CYRUSREPLICA_PREFIX" \
-     -a "$prefix" != "$CYRUSMURDER_PREFIX" \
+     -a "$prefix" != "$CYRUSOTHER_PREFIX" \
    ]; then
    echo "Cyrus build configured with non-cassandane prefix: $prefix" 1>&2
    exit 1;
