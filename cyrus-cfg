@@ -28,6 +28,7 @@ OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
     CFLAGS="$WARNINGS $OPTIONS $CFLAGS" \
     CXXFLAGS="$WARNINGS $OPTIONS $CXXFLAGS" \
     --prefix="$CYRUS_PREFIX" \
+    --with-zoneinfo-dir="$CYRUSLIBS/share/cyrus-timezones/zoneinfo" \
     --enable-http \
     --enable-calalarmd \
     --enable-unit-tests \
