@@ -24,7 +24,7 @@ OPTIONS="-g -O2 -Wl,--as-needed -U_FORTIFY_SOURCE"
 OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
 
 ./configure \
-    PATH="$PATH:/usr/local/cyruslibs/bin" \
+    PATH="$PATH:$CYRUSLIBS/bin" \
     CFLAGS="$WARNINGS $OPTIONS $CFLAGS" \
     CXXFLAGS="$WARNINGS $OPTIONS $CXXFLAGS" \
     --prefix="$CYRUS_PREFIX" \

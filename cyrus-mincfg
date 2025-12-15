@@ -20,7 +20,7 @@ fi
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
 
 ./configure \
-    PATH="$PATH:/usr/local/cyruslibs/bin" \
+    PATH="$PATH:$CYRUSLIBS/bin" \
     CFLAGS="-g -O0 -Wall -Wextra -Wformat-security -Werror -Wl,--as-needed -fstack-protector-strong -fstack-clash-protection $CFLAGS" \
     CXXFLAGS="-g -O0 -Wall -Wextra -Wformat-security -Werror -fstack-protector-strong -fstack-clash-protection $CXXFLAGS" \
     --prefix="$CYRUS_PREFIX" \
