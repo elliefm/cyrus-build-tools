@@ -5,9 +5,9 @@ set -o pipefail
 CL_PATH="/usr/local"
 CL_VPREFIX="cyruslibs-fastmail-v"
 
-if [ -n "$1" ]; then
-    ls -d $CL_PATH/$CL_VPREFIX$1
-else
+if [ -z "$1" -o "x$1" == "xlatest" ]; then
     # XXX the sorting here will break when we reach v100...
     ls -dr $CL_PATH/$CL_VPREFIX* | head -1
+else
+    ls -d $CL_PATH/$CL_VPREFIX$1
 fi
