@@ -30,3 +30,4 @@ fi
 test -d "$prefix" && rm -fr "$prefix"
 test -d cassandane/utils && NOCYRUS=1 make -j4 -C cassandane/utils
 make install
+cyrus-versions
