@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+
+use warnings;
+use strict;
+
+use open ':encoding(UTF-8)';
+
+my $cmd = qq{git log --grep '[cC][vV][eE]-[0-9]' --format='%h%x02%b%x03' @ARGV};
+
+open my $log, '-|', $cmd
+    or die "cannot exec git log: $!\n";
+
+# about to output, open a pager
+my $pager = $ENV{GIT_PAGER} // $ENV{PAGER};
+if (-t STDOUT and $pager) {
+    $ENV{LESS} //= 'FRSX';
+
+    open(my $out, '|-', $pager)
+        or die "cannot exec $pager: $!";
+    select $out;
+}
+
+local $/ = "\x03\n";
+while (<$log>) {
+    chomp;
+
+    my ($sha1, $body) = split /\x02/, $_, 2;
+
+    if ($body =~ m/\b(CVE-[0-9]+-[0-9]+)\b/mi) {
+        print "$sha1 \U$1\E\n";
+    }
+}
+
+close $log;
