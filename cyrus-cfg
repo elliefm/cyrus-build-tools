@@ -50,5 +50,3 @@ OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
     --enable-cyrusdb-benchmarks \
     --with-sqlite \
     $*
-
-make lex-fix
