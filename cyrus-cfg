@@ -17,7 +17,12 @@ if [ -z "$CYRUS_PREFIX" ]; then
     exit 1
 fi
 
+
 test ! -x configure -o configure.ac -nt configure && autoreconf -i -s
+
+# arrange for cunit temp files to use tmpfs
+CUNIT_TMP=/dev/shm/cyrus-cunit-tmp
+test -d $CUNIT_TMP || mkdir $CUNIT_TMP
 
 WARNINGS="-Wall -Wextra -Werror -Wformat-security -Wwrite-strings"
 OPTIONS="-g -O2 -Wl,--as-needed -U_FORTIFY_SOURCE"
@@ -27,6 +32,7 @@ OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
     PATH="$PATH:$CYRUSLIBS/bin" \
     CFLAGS="$WARNINGS $OPTIONS $CFLAGS" \
     CXXFLAGS="$WARNINGS $OPTIONS $CXXFLAGS" \
+    CYRUS_CUNIT_TMPDIR="$CUNIT_TMP" \
     --prefix="$CYRUS_PREFIX" \
     --with-zoneinfo-dir="$CYRUSLIBS/share/cyrus-timezones/zoneinfo" \
     --enable-http \
