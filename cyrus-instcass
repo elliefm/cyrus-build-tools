@@ -28,8 +28,8 @@ if [ "$prefix" != "$CYRUSDEFAULT_PREFIX" \
 fi
 
 test -d "$prefix" && rm -fr "$prefix"
-test -d cassandane/utils && NOCYRUS=1 make -j4 -C cassandane/utils
-make install
+test -d cassandane/utils && NOCYRUS=1 make -j8 -C cassandane/utils
+make -j8 install
 echo -n "Finished: "
 date '+%T'
 cyrus-versions
