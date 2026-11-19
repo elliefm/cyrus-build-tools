@@ -34,7 +34,6 @@ OPTIONS+=" -fstack-protector-strong -fstack-clash-protection"
     CXXFLAGS="$WARNINGS $OPTIONS $CXXFLAGS" \
     CYRUS_CUNIT_TMPDIR="$CUNIT_TMP" \
     --prefix="$CYRUS_PREFIX" \
-    --with-zoneinfo-dir="$CYRUSLIBS/share/cyrus-timezones/zoneinfo" \
     --enable-http \
     --enable-calalarmd \
     --enable-unit-tests \
